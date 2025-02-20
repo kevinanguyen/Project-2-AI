@@ -1,27 +1,35 @@
 Please Enter your team's full names and your answers to the questions marked by QS questions here!
 
-Q1.1:
+Q1.1 (Kevin Nguyen & Ibrahim Mohammad): 
 
-Q1.2:
+The ReflexAgent evaluates each possible action by generating the successor state and assigning a score based on an evaluation function. 
+We improved it by enhancing the evaluation function to prioritize eating food (rewarding food consumption), minimizing distance to the nearest food, 
+avoiding ghosts (penalizing proximity unless they are scared), and encouraging movement (penalizing stopping). Additionally, we added stronger 
+rewards for chasing scared ghosts and adjusted penalties for risky moves near active ghosts.
 
+Q1.2 (Kevin Nguyen & Ibrahim Mohammad): 
 
-
-
-Q2.1:
-
-
-
-
-
-Q3.1:
-
-Q3.2
+The value function rewards states with fewer remaining food pellets, closer proximity to food, 
+and greater distance from active ghosts. It heavily penalizes stopping and being near active ghosts while providing bonuses for eating 
+food and chasing scared ghosts. This estimation makes sense because it encourages Pacman to efficiently clear the board by staying safe from ghosts, 
+quickly consuming food, and leveraging power pellets for ghost hunting.
 
 
+Q2.1 (Kevin Nguyen & Ibrahim Mohammad):
 
-Q4.1:
 
 
-Q5.1:
+
+
+Q3.1 (Kevin Nguyen & Ibrahim Mohammad):
+
+Q3.2 (Kevin Nguyen & Ibrahim Mohammad):
+
+
+
+Q4.1 (Kevin Nguyen & Ibrahim Mohammad):
+
+
+Q5.1 (Kevin Nguyen & Ibrahim Mohammad):
 
 
