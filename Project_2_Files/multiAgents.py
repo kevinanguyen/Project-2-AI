@@ -304,6 +304,49 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         "*** YOUR CODE HERE ***"
+        # Starts the expectimax search and returns the best action
+        def expectimax(agentIndex, depth, state):
+            # If at terminal state or depth limit, return the evaluated score
+            if state.isWin() or state.isLose() or depth == self.depth:
+                return self.evaluationFunction(state)
+
+            # Pacman (Max node)
+            if agentIndex == 0:
+                return max_value(agentIndex, depth, state)
+            else:
+                return exp_value(agentIndex, depth, state)
+
+        # Handles Pacman's turn (maximizing player)
+        def max_value(agentIndex, depth, state):
+            bestScore = float('-inf')
+            bestAction = None
+            for action in state.getLegalActions(agentIndex):
+                successor = state.generateSuccessor(agentIndex, action)
+                score = expectimax((agentIndex + 1) % state.getNumAgents(),
+                                   depth + 1 if (agentIndex + 1) % state.getNumAgents() == 0 else depth,
+                                   successor)
+                # Choose action with the highest score
+                if score > bestScore:
+                    bestScore, bestAction = score, action
+            if depth == 0:
+                return bestAction  # Return best action at root
+            return bestScore
+
+        # Handles ghosts' turn (chance node - expectation over actions)
+        def exp_value(agentIndex, depth, state):
+            actions = state.getLegalActions(agentIndex)
+            probability = 1 / len(actions)  # Uniform probability
+            expectedValue = 0
+            for action in actions:
+                successor = state.generateSuccessor(agentIndex, action)
+                score = expectimax((agentIndex + 1) % state.getNumAgents(),
+                                   depth + 1 if (agentIndex + 1) % state.getNumAgents() == 0 else depth,
+                                   successor)
+                expectedValue += probability * score
+            return expectedValue
+
+        # Start the expectimax search from the root
+        return expectimax(0, 0, gameState)
         util.raiseNotDefined()
 
 def betterEvaluationFunction(currentGameState: GameState):
@@ -314,6 +357,47 @@ def betterEvaluationFunction(currentGameState: GameState):
     DESCRIPTION: <write something here so we know what you did>
     """
     "*** YOUR CODE HERE ***"
+    # Get Pacman's position, food, ghost states, and capsules
+    pacmanPos = currentGameState.getPacmanPosition()
+    foodList = currentGameState.getFood().asList()
+    ghostStates = currentGameState.getGhostStates()
+    capsules = currentGameState.getCapsules()
+
+    # Start with the current score
+    score = currentGameState.getScore()
+
+    # Handle ghost distances (reward distance from active ghosts, penalize proximity)
+    ghostDistances = [manhattanDistance(pacmanPos, ghost.getPosition()) for ghost in ghostStates]
+    for ghostState, dist in zip(ghostStates, ghostDistances):
+        if ghostState.scaredTimer > 0:
+            score += 200 / (dist + 1)  # Incentivize chasing scared ghosts
+        else:
+            if dist <= 1:
+                score -= 1000  # Heavy penalty for dangerous proximity
+            else:
+                score += dist * 5  # Reward staying away from active ghosts
+
+    # Handle food distance (incentivize eating closest food)
+    if foodList:
+        closestFoodDist = min([manhattanDistance(pacmanPos, food) for food in foodList])
+        score += 10 / (closestFoodDist + 1)  # Closer food = higher score
+        score -= len(foodList) * 20  # Penalize remaining food
+
+    # Handle capsules (incentivize eating capsules)
+    if capsules:
+        closestCapsuleDist = min([manhattanDistance(pacmanPos, cap) for cap in capsules])
+        score += 25 / (closestCapsuleDist + 1)  # Closer capsule = higher score
+        score -= len(capsules) * 100  # Penalize remaining capsules
+
+    # Additional incentive if winning state
+    if currentGameState.isWin():
+        score += 10000
+
+    # Heavy penalty if losing state
+    if currentGameState.isLose():
+        score -= 10000
+
+    return score
     util.raiseNotDefined()
 
 # Abbreviation

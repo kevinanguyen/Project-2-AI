@@ -10,36 +10,42 @@ rewards for chasing scared ghosts and adjusted penalties for risky moves near ac
 Q1.2 (Kevin Nguyen & Ibrahim Mohammad): 
 
 The value function rewards states with fewer remaining food pellets, closer proximity to food, 
-and greater distance from active ghosts. It heavily penalizes stopping and being near active ghosts while providing bonuses for eating 
-food and chasing scared ghosts. This estimation makes sense because it encourages Pacman to efficiently clear the board by staying safe from ghosts, 
-quickly consuming food, and leveraging power pellets for ghost hunting.
-
+and greater distance from active ghosts. It penalizes stopping and being near active ghosts while providing bonuses for eating 
+food and chasing scared ghosts. This estimation makes sense because it encourages Pacman to clear the board while also staying 
+safe from ghosts, quickly consuming food, and leveraging power pellets for ghost hunting.
 
 Q2.1 (Kevin Nguyen & Ibrahim Mohammad):
 
-The MinimaxAgent algorithm works by recursively exploring the game tree, alternating between Pacman’s maximizing moves and the ghosts’ 
+The MinimaxAgent algorithm works by recursively exploring the game tree; it alternates between Pacman’s maximizing moves and the ghosts’ 
 minimizing moves. Pacman chooses actions that maximize the minimum expected outcome (worst-case scenario), while each ghost tries to minimize 
-Pacman’s score. The algorithm evaluates terminal states (win/lose) or when the specified depth is reached, using self.evaluationFunction. The 
-depth increases after all agents have made a move, representing one ply. The agent works because it systematically explores all possible future 
-outcomes, correctly applying the minimax principle and respecting depth control, ensuring optimal decisions in adversarial conditions.
-
+Pacman’s score. The algorithm evaluates terminal states (win/lose) or when the specified depth is reached (via self.evaluationFunction). The 
+depth increases after all agents have made a move (one ply). The agent works because it systematically explores all possible future 
+outcomes, applying the minimax principle and respecting depth control.
 
 Q3.1 (Kevin Nguyen & Ibrahim Mohammad):
 
 The AlphaBetaAgent’s minimax values are identical to the MinimaxAgent’s minimax values because alpha-beta pruning does not change the order in 
-which values are computed; it only eliminates branches that cannot affect the final decision. In other words, alpha-beta pruning improves 
-efficiency by skipping unnecessary computations but still explores all critical paths that contribute to the optimal minimax value. The core 
-minimax logic remains intact, ensuring that the returned minimax values are the same as those computed by the standard MinimaxAgent.
+which values are computed; it only eliminates branches that cannot affect the final decision (e.g. alpha-beta pruning improves 
+efficiency by skipping unnecessary computations while still exploring all paths that contribute to the optimal minimax value). The core 
+minimax logic remains intact which ensures that the returned minimax values are the same as the ones computed by the standard MinimaxAgent.
 
 Q3.2 (Kevin Nguyen & Ibrahim Mohammad):
 
 The tie-breaking strategy implemented selects the first action among those with the highest evaluated score. This approach occurs naturally 
 because the agent iterates through getLegalActions() in the order provided by the environment and updates the best action only when a strictly 
-better value is found. Therefore, in the case of equal values, the first encountered optimal action is chosen without additional tie-breaking logic.
+better value is found. In the case of equal values,  it makes sure that the first encountered optimal action is chosen without additional 
+tie-breaking logic.
 
 Q4.1 (Kevin Nguyen & Ibrahim Mohammad):
 
+The Expectimax algorithm models the ghosts’ behavior using probability (in contrast of assuming optimal adversarial behavior like Minimax). For 
+Pacman’s turn (max node), the algorithm selects the action that maximizes the expected score. For the ghosts’ turn (chance node), it calculates 
+the expected value by averaging the outcomes of all legal actions (assuming that the ghosts choose each action uniformly at random). This allows Pacman 
+to take calculated risks based on potential rewards rather than worst-case outcomes.
 
 Q5.1 (Kevin Nguyen & Ibrahim Mohammad):
 
-
+The new evaluation function rewards Pacman for being closer to food and capsules. This is optimal because it also handles ghost interactions by penalizing 
+proximity to active ghosts while rewarding chasing scared ghosts; it accounts for the number of remaining food pellets and capsules which discourages wandering 
+around (winning states get a large bonus; losing states get a heavy penalty) Compared to the previous evaluation, this function prioritizes safe yet aggressive 
+gameplay which will result in higher average scores with faster completion times.
