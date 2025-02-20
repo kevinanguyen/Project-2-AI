@@ -17,15 +17,25 @@ quickly consuming food, and leveraging power pellets for ghost hunting.
 
 Q2.1 (Kevin Nguyen & Ibrahim Mohammad):
 
-
-
+The MinimaxAgent algorithm works by recursively exploring the game tree, alternating between Pacman’s maximizing moves and the ghosts’ 
+minimizing moves. Pacman chooses actions that maximize the minimum expected outcome (worst-case scenario), while each ghost tries to minimize 
+Pacman’s score. The algorithm evaluates terminal states (win/lose) or when the specified depth is reached, using self.evaluationFunction. The 
+depth increases after all agents have made a move, representing one ply. The agent works because it systematically explores all possible future 
+outcomes, correctly applying the minimax principle and respecting depth control, ensuring optimal decisions in adversarial conditions.
 
 
 Q3.1 (Kevin Nguyen & Ibrahim Mohammad):
 
+The AlphaBetaAgent’s minimax values are identical to the MinimaxAgent’s minimax values because alpha-beta pruning does not change the order in 
+which values are computed; it only eliminates branches that cannot affect the final decision. In other words, alpha-beta pruning improves 
+efficiency by skipping unnecessary computations but still explores all critical paths that contribute to the optimal minimax value. The core 
+minimax logic remains intact, ensuring that the returned minimax values are the same as those computed by the standard MinimaxAgent.
+
 Q3.2 (Kevin Nguyen & Ibrahim Mohammad):
 
-
+The tie-breaking strategy implemented selects the first action among those with the highest evaluated score. This approach occurs naturally 
+because the agent iterates through getLegalActions() in the order provided by the environment and updates the best action only when a strictly 
+better value is found. Therefore, in the case of equal values, the first encountered optimal action is chosen without additional tie-breaking logic.
 
 Q4.1 (Kevin Nguyen & Ibrahim Mohammad):
 
